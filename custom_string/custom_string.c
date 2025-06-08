@@ -5,64 +5,64 @@
 
 #include "custom_string.h"
 
-struct string create_string(const char *input, const size_t capacity)
+bool create_string(const char *string, const size_t capacity, struct string *str)
 {
-    if (input == NULL || strlen(input) == 0) {
-        fprintf(stderr, "string cannot be formed from null char *\n");
-        return NULL_STRING;
+    if (string == NULL || strlen(string) == 0) {
+        fprintf(stderr, "string is null at create_string()\n");
+        return false;
     }
 
     if (capacity == 0) {
-        fprintf(stderr, "capacity cannot be 0\n");
-        return NULL_STRING;
+        fprintf(stderr, "capacity is 0 at create_string()\n");
+        return false;
     }
 
-    size_t input_size = strlen(input);
+    size_t string_size = strlen(string);
 
-    if (input_size > capacity) {
-        fprintf(stderr, "size cannot be greater than capacity\n");
-        return NULL_STRING;
+    if (string_size > capacity) {
+        fprintf(stderr, "size is greater than capacity at create_string()\n");
+        return false;
     }
 
-    struct string strr = NULL_STRING;
-    strr.str = malloc(input_size + 1);
-    if (!strr.str) {
-        perror("malloc failed");
-        return NULL_STRING;
+    str->str = malloc(string_size + 1);
+    if (!str->str) {
+        fprintf(stderr, "malloc failed at create_string()\n");
+        return false;
     }
-    strr.size = input_size;
-    strr.capacity = capacity;
-    strcpy(strr.str, input);
-    return strr;
+    str->size = string_size;
+    str->capacity = capacity;
+    strcpy(str->str, string);
+
+    return true;
 }
 
-bool update_string(struct string *old_string, const char *new_string, const size_t new_capacity)
+bool update_string(struct string *old_string, const size_t new_capacity, const char *new_string)
 {
     if (!old_string) {
-        fprintf(stderr, "old string is null at update_string()");
+        fprintf(stderr, "old string is null at update_string()\n");
         return false;
     }
 
     size_t ns_size = strlen(new_string);
 
     if (new_string == NULL || ns_size == 0) {
-        fprintf(stderr, "new string cannot be null");
+        fprintf(stderr, "new string is null at update_string()\n");
         return false;
     }
 
-    if (new_capacity <= 0) {
-        fprintf(stderr, "new capacity cannot be 0 or negative");
+    if (new_capacity == 0) {
+        fprintf(stderr, "new capacity is 0 at update_string()\n");
         return false;
     }
     
     if (ns_size > new_capacity) {
-        fprintf(stderr, "Error: new string size exceeds capacity\n");
+        fprintf(stderr, "size is larger than capacity at update_string()\n");
         return false;
     }
 
     char *new_str = realloc(old_string->str, new_capacity);
     if (!new_str) {
-        fprintf(stderr, "realloc failed.\n");
+        fprintf(stderr, "realloc failed at update_string()\n");
         return false;
     }
 
@@ -78,14 +78,14 @@ bool update_string(struct string *old_string, const char *new_string, const size
 void print_tokens(const struct string *strr)
 {
     if (!strr->str) {
-        fprintf(stderr, "string is empty, cannot print tokens\n");
+        fprintf(stderr, "string is null at print_tokens()\n");
         return;
     }
     
     // Make a writable copy of the string so strtok doesn't modify original
     char *temp = malloc(strr->size + 1);
     if (!temp) {
-        fprintf(stderr, "malloc failed");
+        fprintf(stderr, "malloc failed at print_tokens()\n");
         return;
     }
 
@@ -103,7 +103,7 @@ void print_tokens(const struct string *strr)
 void print_string(const struct string *strr)
 {
     if (!strr->str) {
-        fprintf(stderr, "string is null, cannot print");
+        fprintf(stderr, "string is null at print_string()\n");
         return;
     }
     printf("%s\n", strr->str);
@@ -113,12 +113,12 @@ void print_string(const struct string *strr)
 bool compare_string(const struct string *strr1, const struct string *strr2)
 {
     if (!strr1) {
-        fprintf(stderr, "string 1 is NULL in compare_string()\n");
+        fprintf(stderr, "string 1 is null at compare_string()\n");
         return false;
     }
 
     if (!strr2) {
-        fprintf(stderr, "string 2 is NULL in compare_string()\n");
+        fprintf(stderr, "string 2 is null at compare_string()\n");
         return false;
     }
 
@@ -135,77 +135,74 @@ bool compare_string(const struct string *strr1, const struct string *strr2)
     return true;
 }
 
-struct string add_string(const struct string *strr1, const struct string *strr2, const size_t capacity)
+bool add_string(const struct string *strr1, const struct string *strr2, const size_t capacity, struct string *out_string)
 {
     if (!strr1 || strr1->size == 0) {
         fprintf(stderr, "string 1 is null or empty at add_string()\n");
-        return NULL_STRING;
+        return false;
     }
 
     if (!strr2 || strr2->size == 0) {
         fprintf(stderr, "string 2 is null or empty at add_string()\n");
-        return NULL_STRING;
+        return false;
     }
 
     if ((strr1->size + strr2->size) > capacity) {
         fprintf(stderr, "size of both is larger than capacity\n");
-        return NULL_STRING;
+        return false;
     }
 
-    struct string new_str = NULL_STRING;
-
     // Allocate enough space for concatenated string + null terminator
-    new_str.str = malloc(strr1->size + strr2->size + 1);
-    if (!new_str.str) {
+    out_string->str = malloc(strr1->size + strr2->size + 1);
+    if (!out_string->str) {
         fprintf(stderr, "malloc failed at add_string()\n");
-        return NULL_STRING;
+        return false;
     }
 
     // Copy strr1's string bytes
-    strcpy(new_str.str, strr1->str);
+    strcpy(out_string->str, strr1->str);
 
     // Append strr2's string safely
-    strcat(new_str.str, strr2->str);
+    strcat(out_string->str, strr2->str);
 
-    new_str.size = strr1->size + strr2->size;
-    new_str.capacity = capacity;
+    out_string->size = strr1->size + strr2->size;
+    out_string->capacity = capacity;
 
-    return new_str;
+    return true;
 }
 
-struct string substring(const struct string *strr, const size_t start, const size_t length)
+bool substring(const struct string *strr, const size_t start, const size_t length, struct string *substring)
 {
     if (!strr || strr->size == 0) {
         fprintf(stderr, "string is null or empty at substring()\n");
-        return NULL_STRING;
+        return false;
     }
 
     if (start >= strr->size) {
         fprintf(stderr, "start index out of range at substring()\n");
-        return NULL_STRING;
+        return false;
     }
 
     size_t max_len = strr->size - start;
     size_t sub_len = (length > max_len) ? max_len : length;
 
     if (sub_len == 0) {
-        fprintf(stderr, "substring length is zero after adjustment\n");
-        return NULL_STRING;
+        fprintf(stderr, "substring length is zero after adjustment at substring()\n");
+        return false;
     }
 
-    struct string sub_str = NULL_STRING;
-    sub_str.str = malloc(sub_len + 1);
-    if (!sub_str.str) {
+    substring->str = malloc(sub_len + 1);
+    if (!substring->str) {
         fprintf(stderr, "malloc failed at substring()\n");
-        return NULL_STRING;
+        return false;
     }
 
-    memcpy(sub_str.str, strr->str + start, sub_len);
-    sub_str.str[sub_len] = '\0';
+    memcpy(substring->str, strr->str + start, sub_len);
+    substring->str[sub_len] = '\0';
 
-    sub_str.size = sub_len;
+    substring->size = sub_len;
 
-    return sub_str;
+    return true;
 }
 
 bool free_string(struct string *strr)

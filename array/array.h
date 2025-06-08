@@ -10,8 +10,6 @@ struct array
     size_t size;
 };
 
-#define NULL_ARRAY (struct array){NULL, 0, 0}
-
-struct array create_array(const void *items, const size_t size, const size_t item_size);
+bool create_array(const void *items, const size_t item_size, const size_t size, struct array *arr);
 void *get_element(const struct array *arr, const size_t index);
-const bool free_array(struct array *arr);
+bool free_array(struct array *arr);

@@ -3,30 +3,26 @@
 #include <string.h>
 #include "queue.h"
 
-#define NULL_QUEUE (struct queue){NULL, 0, 0, 0, 0, 0}
-
-struct queue create_queue(const size_t item_size, const size_t capacity)
+bool create_queue(const size_t item_size, const size_t capacity, struct queue *q)
 {
     if (item_size == 0) {
         fprintf(stderr, "item size is null at create_queue()\n");
-        return NULL_QUEUE;
+        return false;
     }
 
     if (capacity == 0) {
         fprintf(stderr, "capacity is null at create_queue()\n");
-        return NULL_QUEUE;
+        return false;
     }
 
-    struct queue q = NULL_QUEUE;
-
-    q.items = malloc(item_size * capacity);
-    if (!q.items) {
+    q->items = malloc(item_size * capacity);
+    if (!q->items) {
         fprintf(stderr, "malloc failed at create_queue()\n");
-        return NULL_QUEUE;
+        return false;
     }
 
-    q.item_size = item_size;
-    q.capacity = capacity;
+    q->item_size = item_size;
+    q->capacity = capacity;
 
     return q;
 }

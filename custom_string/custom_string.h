@@ -10,13 +10,11 @@ struct string {
     size_t capacity;
 };
 
-#define NULL_STRING (struct string){NULL, 0, 0}
-
-struct string create_string(const char *input, const size_t capacity);
-bool update_string(struct string *old_string, const char *new_string, const size_t new_capacity);
+bool create_string(const char *string, const size_t capacity, struct string *str);
+bool update_string(struct string *old_string, const size_t new_capacity, const char *new_string);
 void print_tokens(const struct string *strr);
 void print_string(const struct string *strr);
 bool compare_string(const struct string *strr1, const struct string *strr2);
-struct string add_string(const struct string *strr1, const struct string *strr2, const size_t capacity);
-struct string substring(const struct string *strr, const size_t start, const size_t length);
+bool add_string(const struct string *strr1, const struct string *strr2, const size_t capacity, struct string *out_string);
+bool substring(const struct string *strr, const size_t start, const size_t length, struct string *substring);
 bool free_string(struct string *strr);

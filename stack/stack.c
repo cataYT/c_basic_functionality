@@ -4,27 +4,25 @@
 #include <stdbool.h>
 #include "stack.h"
 
-struct stack create_stack(void *item, size_t item_size, size_t capacity)
+bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s)
 {
     if (!item) {
         fprintf(stderr, "item is null at create_stack()\n");
-        return NULL_STACK;
+        return false;
     }
 
     if (item_size == 0 || capacity == 0) {
         fprintf(stderr, "item_size or capacity is 0 at create_stack()\n");
-        return NULL_STACK;
+        return false;
     }
 
-    struct stack s = NULL_STACK;
-
-    s.items = malloc(sizeof(void *) * capacity);
-    if (!s.items) {
-        fprintf(stderr, "malloc failed for items array\n");
-        return NULL_STACK;
+    s->items = malloc(sizeof(item) * capacity);
+    if (!s->items) {
+        fprintf(stderr, "malloc failed at create_stack()\n");
+        return false;
     }
 
-    s.items[0] = item;
+    s->items[0] = item;
 
     return s;
 }

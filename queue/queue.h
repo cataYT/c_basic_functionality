@@ -12,7 +12,7 @@ struct queue {
     size_t capacity;
 };
 
-struct queue create_queue(const size_t item_size, const size_t capacity);
+bool create_queue(const size_t item_size, const size_t capacity, struct queue *q);
 bool queue_is_full(const struct queue *q);
 bool queue_is_empty(const struct queue *q);
 bool queue_is_null(const struct queue *q);
