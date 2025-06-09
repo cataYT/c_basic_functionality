@@ -16,6 +16,8 @@ bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s
         return false;
     }
 
+    memset(s, 0, sizeof(*s));
+
     s->items = malloc(sizeof(item) * capacity);
     if (!s->items) {
         fprintf(stderr, "malloc failed at create_stack()\n");

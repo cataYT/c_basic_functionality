@@ -5,7 +5,7 @@
 #include <limits.h>
 #include "common.h"
 
-bool get_string_input(const char *msg, char *out, const size_t max_length)
+bool get_string_input(const char *msg, const size_t max_length, char *out)
 {
     if (!msg || !out || max_length == 0) {
         fprintf(stderr, "Invalid arguments to get_string_input\n");
@@ -44,7 +44,7 @@ bool get_int_input(const char *msg, int *out)
     }
 
     char buffer[32];  // Large enough for any reasonable integer input
-    if (!get_string_input(msg, buffer, sizeof(buffer) - 1)) {
+    if (!get_string_input(msg, sizeof(buffer) - 1, buffer)) {
         return false;  // Error already handled by get_string_input
     }
 

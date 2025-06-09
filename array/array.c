@@ -20,11 +20,13 @@ bool create_array(const void *items, size_t item_size, const size_t size, struct
         return false;
     }
 
-    arr->items = malloc(size * item_size);
+    memset(arr, 0, sizeof(*arr));
+
+    /* arr->items = malloc(size * item_size);
     if (!arr->items) {
         fprintf(stderr, "malloc failed\n");
         return false;
-    }
+    } */
 
     memcpy(arr->items, items, size * item_size);
 
@@ -56,7 +58,7 @@ bool free_array(struct array *arr)
         return false;
     }
 
-    free(arr->items);
+    // free(arr->items);
     arr->items = NULL;
     arr->item_size = 0;
     arr->size = 0;

@@ -15,6 +15,8 @@ bool create_vector(const size_t capacity, const size_t e_size, struct vector *ve
         return false;
     }
 
+    memset(vec, 0, sizeof(*vec));
+
     vec->items = malloc(e_size * capacity);
     if (!vec->items) {
         fprintf(stderr, "malloc failed at create_vector()\n");
@@ -23,6 +25,29 @@ bool create_vector(const size_t capacity, const size_t e_size, struct vector *ve
     vec->e_size = e_size;
     memset(vec->items, 0, e_size);
     vec->capacity = capacity;
+
+    return true;
+}
+
+bool get_vector_element(const struct vector *vec, const size_t index, void *element)
+{
+    if (!vec) {
+        fprintf(stderr, "vector is null at get_vector_element()\n");
+        return false;
+    }
+
+    if (!element) {
+        fprintf(stderr, "elemen is null at get_vector_element()\n");
+        return false;
+    }
+
+    if (index >= vec->size) {
+        fprintf(stderr, "index is greater than vector size at get_vector_element()\n");
+        return false;
+    }
+
+    void *src = (char *)vec->items + (index * vec->e_size);
+    memcpy(element, src, vec->e_size);
 
     return true;
 }
@@ -96,6 +121,37 @@ bool pop_search(struct vector *vec, const void *element)
             return true;  // Remove only the first match
         }
     }
+}
+
+bool pop_index(struct vector *vec, const size_t index, void *element)
+{
+    if (!vec) {
+        fprintf(stderr, "vector is null at pop_index()\n");
+        return false;
+    }
+
+    if (!element) {
+        fprintf(stderr, "element is null at pop_index()\n");
+        return false;
+    }
+
+    if (index >= vec->size) {
+        fprintf(stderr, "index is out of bounds at pop_index()\n");
+        return false;
+    }
+
+    // Get pointer to the element to pop
+    void *ele_ptr = (char *)vec->items + (index * vec->e_size);
+    memcpy(element, ele_ptr, vec->e_size); // Copy to output
+
+    // Shift remaining elements left
+    if (index < vec->size - 1) {
+        void *src = (char *)vec->items + ((index + 1) * vec->e_size);
+        memmove(ele_ptr, src, (vec->size - index - 1) * vec->e_size);
+    }
+
+    vec->size--;
+    return true;
 }
 
 const bool free_vector(struct vector *vec)

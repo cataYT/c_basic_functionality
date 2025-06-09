@@ -15,6 +15,8 @@ bool create_queue(const size_t item_size, const size_t capacity, struct queue *q
         return false;
     }
 
+    memset(q, 0, sizeof(*q));
+
     q->items = malloc(item_size * capacity);
     if (!q->items) {
         fprintf(stderr, "malloc failed at create_queue()\n");

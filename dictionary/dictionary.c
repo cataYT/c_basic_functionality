@@ -17,6 +17,8 @@ bool create_dict(const struct pair initial_pair, const size_t capacity, struct d
         return false;
     }
 
+    memset(dict, 0, sizeof(*dict));
+
     dict->pairs = malloc(sizeof(struct pair) * capacity);
 
     if (!dict->pairs) {
@@ -73,6 +75,10 @@ bool append_dict(struct dictionary *dict, const struct pair new_pair)
 
 void print_dict(const struct dictionary *dict)
 {
+    if (!dict) {
+        return;
+    }
+
     for (int i = 0; i < dict->size; i++) {
         char *key = (char*) dict->pairs[i].key;
         int *value = (int*) dict->pairs[i].value;
