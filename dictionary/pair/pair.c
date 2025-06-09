@@ -25,8 +25,6 @@ bool create_pair(const void *key, const void *value, const size_t key_size, cons
         return false;
     }
 
-    memset(p, 0, sizeof(*p));
-
     p->key = malloc(key_size);
     if (!p->key) {
         fprintf(stderr, "malloc failed at create_pair()\n");

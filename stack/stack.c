@@ -16,8 +16,6 @@ bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s
         return false;
     }
 
-    memset(s, 0, sizeof(*s));
-
     s->items = malloc(sizeof(item) * capacity);
     if (!s->items) {
         fprintf(stderr, "malloc failed at create_stack()\n");
@@ -29,19 +27,22 @@ bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s
     return s;
 }
 
-void *peek(struct stack *s)
+bool peek(struct stack *s, void *item)
 {
     if (!s) {
         fprintf(stderr, "stack is null at peek()\n");
-        return NULL;
+        return false;
     }
 
     if (s->size == 0) {
         fprintf(stderr, "stack is empty at peek()\n");
-        return NULL;
+        return false;
     }
 
-    return s->items[s->size - 1]; // returns the top pointer
+    void *src = (char *)s->items + ((s->size - 1 )* s->item_size);
+    memcpy(item, src, s->item_size);
+
+    return true;
 }
 
 bool stack_push(struct stack *s, void *item)
@@ -67,19 +68,20 @@ bool stack_push(struct stack *s, void *item)
     return true;
 }
 
-void *stack_pop(struct stack *s)
+bool stack_pop(struct stack *s, void *item)
 {
     if (!s || !s->items) {
         fprintf(stderr, "stack is null at stack_pop()\n");
-        return NULL;
+        return false;
     }
 
     void *pop_item = s->items[s->size];
+    memcpy(item, pop_item, s->item_size);
 
     s->items[s->size] = 0;
     s->size--;
 
-    return pop_item;
+    return true;
 }
 
 bool stack_is_empty(struct stack *s)

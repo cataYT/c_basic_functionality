@@ -17,8 +17,6 @@ bool create_dict(const struct pair initial_pair, const size_t capacity, struct d
         return false;
     }
 
-    memset(dict, 0, sizeof(*dict));
-
     dict->pairs = malloc(sizeof(struct pair) * capacity);
 
     if (!dict->pairs) {

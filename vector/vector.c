@@ -15,8 +15,6 @@ bool create_vector(const size_t capacity, const size_t e_size, struct vector *ve
         return false;
     }
 
-    memset(vec, 0, sizeof(*vec));
-
     vec->items = malloc(e_size * capacity);
     if (!vec->items) {
         fprintf(stderr, "malloc failed at create_vector()\n");

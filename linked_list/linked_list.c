@@ -16,8 +16,6 @@ bool create_linked_list(const void *data, const size_t data_size, struct linked_
         return false;
     }
 
-    memset(head, 0, sizeof(*head));
-
     head->data = malloc(data_size);
     if (!head->data) {
         fprintf(stderr, "malloc failed at create_linked_list()\n");
@@ -46,8 +44,6 @@ bool insert_linked_list(const void *data, const struct linked_list *head, struct
         fprintf(stderr, "head is null at insert_linked_list()\n");
         return false;
     }
-
-    memset(new_node, 0, sizeof(*new_node));
 
     new_node->data_size = head->data_size;
     new_node->data = malloc(new_node->data_size);

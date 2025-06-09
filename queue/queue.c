@@ -15,7 +15,6 @@ bool create_queue(const size_t item_size, const size_t capacity, struct queue *q
         return false;
     }
 
-    memset(q, 0, sizeof(*q));
 
     q->items = malloc(item_size * capacity);
     if (!q->items) {
@@ -88,30 +87,35 @@ bool dequeue(struct queue *q)
     return true;
 }
 
-void *peek(const struct queue *q)
+bool peek(const struct queue *q, void *item)
 {
     if (queue_is_null(q)) {
         fprintf(stderr, "queue is null at peek()\n");
-        return NULL;
+        return false;
     }
+    void *src = (char *)q->item_size + (q->front * q->item_size);
+    memcpy(item, src, q->item_size);
 
-    return (char *)q->items + (q->front * q->item_size);
+    return true;
 }
 
-void *peek_back(const struct queue *q)
+bool peek_back(const struct queue *q, void *item)
 {
     if (queue_is_null(q)) {
         fprintf(stderr, "queue is null at peek_back()\n");
-        return NULL;
+        return false;
     }
 
     if (queue_is_empty(q)) {
         fprintf(stderr, "queue is empty at peek_back()\n");
-        return NULL;
+        return false;
     }
 
     size_t back_index = (q->rear + q->capacity - 1) % q->capacity;
-    return (char *)q->items + (back_index * q->item_size);
+    void *src = (char *)q->items + (back_index * q->item_size);
+    memcpy(item, src, q->item_size);
+
+    return true;
 }
 
 bool free_queue(struct queue *q)

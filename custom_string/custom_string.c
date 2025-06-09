@@ -24,8 +24,6 @@ bool create_string(const char *string, const size_t capacity, struct string *str
         return false;
     }
 
-    memset(str, 0, sizeof(*str));
-
     str->str = malloc(string_size + 1);
     if (!str->str) {
         fprintf(stderr, "malloc failed at create_string()\n");
@@ -154,8 +152,6 @@ bool add_string(const struct string *strr1, const struct string *strr2, const si
         return false;
     }
 
-    memset(out_string, 0, sizeof(*out_string));
-
     // Allocate enough space for concatenated string + null terminator
     out_string->str = malloc(strr1->size + strr2->size + 1);
     if (!out_string->str) {
@@ -194,8 +190,6 @@ bool substring(const struct string *strr, const size_t start, const size_t lengt
         fprintf(stderr, "substring length is zero after adjustment at substring()\n");
         return false;
     }
-
-    memset(substring, 0, sizeof(*substring));
 
     substring->str = malloc(sub_len + 1);
     if (!substring->str) {
