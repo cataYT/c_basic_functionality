@@ -28,7 +28,7 @@ struct stack {
  * @param s Pointer to the stack structure to initialize.
  * @return true if the stack was successfully created, false otherwise.
  */
-bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s);
+bool stack_initialize(void *item, size_t item_size, size_t capacity, struct stack *s);
 
 /**
  * @brief Retrieves the top item from the stack without removing it.
@@ -39,7 +39,7 @@ bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s
  * @param item Pointer to memory where the top item will be copied.
  * @return true if the stack is not empty and the item was copied, false otherwise.
  */
-bool peek(struct stack *s, void *item);
+bool stack_peek(struct stack *s, void *item);
 
 /**
  * @brief Pushes an item onto the top of the stack.
@@ -79,4 +79,4 @@ bool stack_is_empty(struct stack *s);
  * @param s Pointer to the stack.
  * @return true if the stack was successfully freed, false otherwise.
  */
-bool free_stack(struct stack *s);
+bool stack_deinitialize(struct stack *s);

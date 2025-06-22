@@ -36,35 +36,14 @@ bool get_string_input(const char *msg, const size_t max_length, char *out)
     return true;
 }
 
-bool get_int_input(const char *msg, int *out)
+bool parse_unsigned_long(const char *str, unsigned long *out)
 {
-    if (!msg || !out) {
-        fprintf(stderr, "Invalid arguments to get_int_input\n");
-        return false;
-    }
+    if (!str || !out) return false;
 
-    char buffer[32];  // Large enough for any reasonable integer input
-    if (!get_string_input(msg, sizeof(buffer) - 1, buffer)) {
-        return false;  // Error already handled by get_string_input
-    }
-
-    // Attempt to convert input to integer
     char *endptr = NULL;
-    long val = strtol(buffer, &endptr, 10);
+    unsigned long val = strtoul(str, &endptr, 10);
+    if (*endptr != '\0' || val > UINT_MAX) return false;
 
-    // Validate conversion results
-    bool conversion_error = (endptr == buffer || *endptr != '\0');
-    bool range_error = (val < INT_MIN || val > INT_MAX);
-
-    if (conversion_error || range_error) {
-        if (conversion_error) {
-            fprintf(stderr, "Invalid number input: '%s'\n", buffer);
-        } else {
-            fprintf(stderr, "Number out of int range: %ld\n", val);
-        }
-        return false;
-    }
-
-    *out = (int)val;
+    *out = val;
     return true;
 }

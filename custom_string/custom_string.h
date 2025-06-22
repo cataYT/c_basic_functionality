@@ -26,7 +26,7 @@ struct string {
  * @param str Pointer to the string structure to initialize.
  * @return true if successful, false on memory failure or invalid input.
  */
-bool create_string(const char *string, const size_t capacity, struct string *str);
+bool string_initialize(const char *string, const size_t capacity, struct string *str);
 
 /**
  * @brief Updates the content and capacity of an existing string.
@@ -38,23 +38,24 @@ bool create_string(const char *string, const size_t capacity, struct string *str
  * @param new_string New string data to copy in.
  * @return true if successful, false otherwise.
  */
-bool update_string(struct string *old_string, const size_t new_capacity, const char *new_string);
+bool string_update(struct string *old_string, const size_t new_capacity, const char *new_string);
 
 /**
- * @brief Prints the string as space-separated tokens.
- *
- * Tokenizes the string using whitespace and prints each token on a new line.
- *
- * @param strr Pointer to the string to tokenize and print.
+ * @brief 
+ * 
+ * @param strr Pointer to the string struct.
+ * @param delimiter Delimiter for splitting the string.
+ * @param tokens User allocated container for tokens.
+ * @return true if successful, false otherwise.
  */
-void print_tokens(const struct string *strr);
+bool string_split(const struct string *strr, const char *delimiter, char **tokens);
 
 /**
  * @brief Prints the string to standard output.
  *
  * @param strr Pointer to the string to print.
  */
-void print_string(const struct string *strr);
+void string_print_string(const struct string *strr);
 
 /**
  * @brief Compares two strings for equality.
@@ -63,7 +64,7 @@ void print_string(const struct string *strr);
  * @param strr2 Pointer to the second string.
  * @return true if both strings are equal in content and length, false otherwise.
  */
-bool compare_string(const struct string *strr1, const struct string *strr2);
+bool string_compare(const struct string *strr1, const struct string *strr2);
 
 /**
  * @brief Concatenates two strings and stores the result in a third string.
@@ -76,7 +77,7 @@ bool compare_string(const struct string *strr1, const struct string *strr2);
  * @param out_string Pointer to the result string structure.
  * @return true if concatenation succeeded, false on capacity/memory failure.
  */
-bool add_string(const struct string *strr1, const struct string *strr2, const size_t capacity, struct string *out_string);
+bool string_add(const struct string *strr1, const struct string *strr2, const size_t capacity, struct string *out_string);
 
 /**
  * @brief Extracts a substring from a string.
@@ -89,7 +90,7 @@ bool add_string(const struct string *strr1, const struct string *strr2, const si
  * @param substring Pointer to the destination string structure.
  * @return true if the substring was successfully extracted, false if out of bounds.
  */
-bool substring(const struct string *strr, const size_t start, const size_t length, struct string *substring);
+bool string_substring(const struct string *strr, const size_t start, const size_t length, struct string *substring);
 
 /**
  * @brief Frees the memory allocated by a string.
@@ -99,4 +100,4 @@ bool substring(const struct string *strr, const size_t start, const size_t lengt
  * @param strr Pointer to the string structure to free.
  * @return true if memory was successfully freed, false otherwise.
  */
-bool free_string(struct string *strr);
+bool string_deinitialize(struct string *strr);

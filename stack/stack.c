@@ -4,21 +4,21 @@
 #include <stdbool.h>
 #include "stack.h"
 
-bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s)
+bool stack_initialize(void *item, size_t item_size, size_t capacity, struct stack *s)
 {
     if (!item) {
-        fprintf(stderr, "item is null at create_stack()\n");
+        fprintf(stderr, "item is null at stack_initialize()\n");
         return false;
     }
 
     if (item_size == 0 || capacity == 0) {
-        fprintf(stderr, "item_size or capacity is 0 at create_stack()\n");
+        fprintf(stderr, "item_size or capacity is 0 at stack_initialize()\n");
         return false;
     }
 
     s->items = malloc(sizeof(item) * capacity);
     if (!s->items) {
-        fprintf(stderr, "malloc failed at create_stack()\n");
+        fprintf(stderr, "malloc failed at stack_initialize()\n");
         return false;
     }
 
@@ -27,15 +27,20 @@ bool create_stack(void *item, size_t item_size, size_t capacity, struct stack *s
     return s;
 }
 
-bool peek(struct stack *s, void *item)
+bool stack_peek(struct stack *s, void *item)
 {
     if (!s) {
-        fprintf(stderr, "stack is null at peek()\n");
+        fprintf(stderr, "stack is null at stack_peek()\n");
         return false;
     }
 
     if (s->size == 0) {
-        fprintf(stderr, "stack is empty at peek()\n");
+        fprintf(stderr, "stack is empty at stack_peek()\n");
+        return false;
+    }
+
+    if (!item) {
+        fprintf(stderr, "item is null at stack_peek()\n");
         return false;
     }
 
@@ -75,6 +80,11 @@ bool stack_pop(struct stack *s, void *item)
         return false;
     }
 
+    if (!item) {
+        fprintf(stderr, "item is null at stack_pop()\n");
+        return false;
+    }
+
     void *pop_item = s->items[s->size];
     memcpy(item, pop_item, s->item_size);
 
@@ -98,11 +108,12 @@ bool stack_is_empty(struct stack *s)
     return false;
 }
 
-bool free_stack(struct stack *s)
+bool stack_deinitialize(struct stack *s)
 {
-    if (!s || !s->items) {
+    if (!s) {
         return false;
     }
+
     free(s->items);
     s->items = NULL;
     s->item_size = 0;

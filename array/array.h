@@ -32,7 +32,7 @@ struct array
  * @param arr Pointer to the array structure to initialize.
  * @return true if the array was successfully created, false otherwise.
  */
-bool create_array(const void *items, const size_t item_size, const size_t size, struct array *arr);
+bool array_initialize(const void *items, const size_t item_size, const size_t size, struct array *arr);
 
 /**
  * @brief Retrieves an element at a given index.
@@ -44,7 +44,7 @@ bool create_array(const void *items, const size_t item_size, const size_t size, 
  * @param element Pointer to memory where the element will be copied.
  * @return true if the element was successfully retrieved, false otherwise.
  */
-bool get_element(const struct array *arr, const size_t index, void *element);
+bool array_get_element(const struct array *arr, const size_t index, void *element);
 
 /**
  * @brief Sorts the contents of an array and stores the sorted data in another array.
@@ -56,7 +56,7 @@ bool get_element(const struct array *arr, const size_t index, void *element);
  * @param sorted_array Pointer to the destination array to hold sorted data.
  * @return true if sorting was successful, false otherwise.
  */
-bool sort_array(struct array *arr, struct array *sorted_array);
+bool array_sort(struct array *arr, struct array *sorted_array);
 
 /**
  * @brief Frees the memory used by the array.
@@ -67,4 +67,4 @@ bool sort_array(struct array *arr, struct array *sorted_array);
  * @param arr Pointer to the array to free.
  * @return true if memory was successfully freed or array was empty, false otherwise.
  */
-bool free_array(struct array *arr);
+bool array_deinitialize(struct array *arr);

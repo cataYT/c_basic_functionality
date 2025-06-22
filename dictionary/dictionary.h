@@ -26,7 +26,7 @@ struct dictionary {
  * @param dict Pointer to the dictionary structure to initialize.
  * @return true if the dictionary was successfully created, false otherwise.
  */
-bool create_dict(const struct pair initial_pair, const size_t capacity, struct dictionary *dict);
+bool dictionary_initialize(const struct pair initial_pair, const size_t capacity, struct dictionary *dict);
 
 /**
  * @brief Appends a key-value pair to the dictionary.
@@ -37,7 +37,7 @@ bool create_dict(const struct pair initial_pair, const size_t capacity, struct d
  * @param new_pair The key-value pair to add.
  * @return true if the pair was successfully appended, false if capacity is exceeded or memory error occurs.
  */
-bool append_dict(struct dictionary *dict, const struct pair new_pair);
+bool dictionary_append(struct dictionary *dict, const struct pair new_pair);
 
 /**
  * @brief Prints the contents of the dictionary.
@@ -47,7 +47,7 @@ bool append_dict(struct dictionary *dict, const struct pair new_pair);
  *
  * @param dict Pointer to the dictionary.
  */
-void print_dict(struct dictionary *dict);
+void dictionary_print(struct dictionary *dict);
 
 /**
  * @brief Frees the memory used by the dictionary and its contents.
@@ -57,4 +57,4 @@ void print_dict(struct dictionary *dict);
  * @param dict Pointer to the dictionary to free.
  * @return true if the dictionary was successfully freed, false otherwise.
  */
-bool free_dict(const struct dictionary *dict);
+bool dictionary_deinitialize(const struct dictionary *dict);

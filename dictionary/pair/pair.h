@@ -27,7 +27,7 @@ struct pair {
  * @param p Pointer to the pair structure to initialize.
  * @return true if the pair was successfully created, false otherwise.
  */
-bool create_pair(const void *key, const void *value, const size_t key_size, const size_t value_size, struct pair *p);
+bool pair_initialize(const void *key, const void *value, const size_t key_size, const size_t value_size, struct pair *p);
 
 /**
  * @brief Checks if a pair is null.
@@ -37,7 +37,7 @@ bool create_pair(const void *key, const void *value, const size_t key_size, cons
  * @param pair Pointer to the pair.
  * @return true if the pair is null or uninitialized, false otherwise.
  */
-bool check_pair_null(const struct pair *pair);
+bool pair_is_null(const struct pair *pair);
 
 /**
  * @brief Frees the memory used by a pair.
@@ -47,4 +47,4 @@ bool check_pair_null(const struct pair *pair);
  * @param pair Pointer to the pair to free.
  * @return true if the pair was successfully freed, false otherwise.
  */
-bool free_pair(struct pair *pair);
+bool pair_deinitialize(struct pair *pair);

@@ -5,27 +5,27 @@
 #include "pair.h"
 #include "dictionary.h"
 
-bool create_dict(const struct pair initial_pair, const size_t capacity, struct dictionary *dict)
+bool dictionary_initialize(const struct pair initial_pair, const size_t capacity, struct dictionary *dict)
 {
-    if (check_pair_null(&initial_pair) == 0) {
-        fprintf(stderr, "initial pair is null at create_dict()\n");
+    if (pair_is_null(&initial_pair) == 0) {
+        fprintf(stderr, "initial pair is null at dictionary_initialize()\n");
         return false;
     }
 
     if (capacity == 0) {
-        fprintf(stderr, "capacity cannot be 0 or negative");
+        fprintf(stderr, "capacity is 0 or negative at dictionary_initialize()\n");
         return false;
     }
 
     dict->pairs = malloc(sizeof(struct pair) * capacity);
 
     if (!dict->pairs) {
-        fprintf(stderr, "malloc failed");
+        fprintf(stderr, "malloc failed at dictionary_initialize()\n");
         return false;
     }
 
     struct pair temp_pair = {NULL};
-    create_pair(initial_pair.key, initial_pair.value, initial_pair.key_size, initial_pair.value_size, &temp_pair);
+    pair_initialize(initial_pair.key, initial_pair.value, initial_pair.key_size, initial_pair.value_size, &temp_pair);
 
     struct pair *first_pair = &dict->pairs[0];
 
@@ -40,25 +40,25 @@ bool create_dict(const struct pair initial_pair, const size_t capacity, struct d
     return true;
 }
 
-bool append_dict(struct dictionary *dict, const struct pair new_pair)
+bool dictionary_append(struct dictionary *dict, const struct pair new_pair)
 {
     if (!dict) {
-        fprintf(stderr, "dictionary is empty at append_dict()\n");
+        fprintf(stderr, "dictionary is empty at dictionary_append()\n");
         return false;
     }
 
-    if (!check_pair_null(&new_pair)) {
-        fprintf(stderr, "new pair is empty at append_dict()\n");
+    if (!pair_is_null(&new_pair)) {
+        fprintf(stderr, "new pair is empty at dictionary_append()\n");
         return false;
     }
 
     if (dict->size >= dict->capacity) {
-        fprintf(stderr, "size is greater than capacity in append_dict()\n");
+        fprintf(stderr, "size is greater than capacity in dictionary_append()\n");
         return false;
     }
 
     struct pair temp_pair = {NULL};
-    create_pair(new_pair.key, new_pair.value, new_pair.key_size, new_pair.value_size, &temp_pair);
+    pair_initialize(new_pair.key, new_pair.value, new_pair.key_size, new_pair.value_size, &temp_pair);
 
     struct pair *last_pair = &dict->pairs[dict->size];
 
@@ -71,7 +71,7 @@ bool append_dict(struct dictionary *dict, const struct pair new_pair)
     return true;
 }
 
-void print_dict(const struct dictionary *dict)
+void dictionary_print(const struct dictionary *dict)
 {
     if (!dict) {
         return;
@@ -84,14 +84,14 @@ void print_dict(const struct dictionary *dict)
     }
 }
 
-const bool free_dict(struct dictionary *dict)
+const bool dictionary_deinitialize(struct dictionary *dict)
 {
     if (!dict) {
         return false;
     }
 
     for (int i = 0; i < dict->size; i++) {
-        if (!free_pair(dict->pairs)) {
+        if (!pair_deinitialize(dict->pairs)) {
             return false;
         }
     }

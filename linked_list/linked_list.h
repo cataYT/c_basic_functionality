@@ -21,7 +21,7 @@ struct linked_list {
  * 
  * @return true on success, false on failure (e.g., allocation failure or invalid inputs).
  */
-bool create_linked_list(const void *data, const size_t data_size, struct linked_list *head);
+bool linked_list_initialize(const void *data, const size_t data_size, struct linked_list *head);
 
 /**
  * @brief Inserts a new node at the end of the linked list.
@@ -33,7 +33,7 @@ bool create_linked_list(const void *data, const size_t data_size, struct linked_
  * 
  * @return true on success, false on failure (e.g., allocation failure or invalid inputs).
  */
-bool insert_linked_list(const void *data, const struct linked_list *head, struct linked_list *new_node);
+bool linked_list_insert_node(const void *data, const struct linked_list *head, struct linked_list *new_node);
 
 /**
  * @brief Removes the last node from the linked list.
@@ -43,7 +43,7 @@ bool insert_linked_list(const void *data, const struct linked_list *head, struct
  * 
  * @return true on success, false on failure (e.g., empty list).
  */
-bool remove_linked_list_node(struct linked_list *head);
+bool linked_list_remove_node(struct linked_list *head);
 
 /**
  * @brief Retrieves a copy of the data at a specified index in the linked list.
@@ -55,7 +55,7 @@ bool remove_linked_list_node(struct linked_list *head);
  * 
  * @return true on success, false if index is out of bounds or inputs are invalid.
  */
-bool get_linked_list_node_data(const size_t index, const struct linked_list *head, void *out_data);
+bool linked_list_get_node_data(const size_t index, const struct linked_list *head, void *out_data);
 
 /**
  * @brief Frees the dynamically allocated contents of a single node.
@@ -64,7 +64,7 @@ bool get_linked_list_node_data(const size_t index, const struct linked_list *hea
  * 
  * @return true on success, false if input is NULL or already freed.
  */
-bool free_linked_list_node(struct linked_list *head);
+bool linked_list_deinitialize_node(struct linked_list *head);
 
 /**
  * @brief Frees the data of all nodes in the linked list.
@@ -75,4 +75,4 @@ bool free_linked_list_node(struct linked_list *head);
  * 
  * @return true on success, false if input is NULL or list is already cleared.
  */
-bool free_linked_list(struct linked_list *head);
+bool linked_list_deinitialize_all(struct linked_list *head);

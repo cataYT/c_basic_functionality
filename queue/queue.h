@@ -29,7 +29,7 @@ struct queue {
  * @param q Pointer to the queue structure to initialize.
  * @return true if the queue is successfully created, false otherwise.
  */
-bool create_queue(const size_t item_size, const size_t capacity, struct queue *q);
+bool queue_initialize(const size_t item_size, const size_t capacity, struct queue *q);
 
 /**
  * @brief Checks if the queue is full.
@@ -64,7 +64,7 @@ bool queue_is_null(const struct queue *q);
  * @param item Pointer to the item to enqueue.
  * @return true if the item was enqueued successfully, false if the queue is full.
  */
-bool enqueue(struct queue *q, const void *item);
+bool queue_enqueue(struct queue *q, const void *item);
 
 /**
  * @brief Removes the item from the front of the queue.
@@ -74,7 +74,7 @@ bool enqueue(struct queue *q, const void *item);
  * @param q Pointer to the queue.
  * @return true if an item was dequeued, false if the queue is empty.
  */
-bool dequeue(struct queue *q);
+bool queue_dequeue(struct queue *q);
 
 /**
  * @brief Retrieves the front item without removing it.
@@ -85,7 +85,7 @@ bool dequeue(struct queue *q);
  * @param item Pointer to memory where the front item will be copied.
  * @return true if the queue is not empty and the item was copied, false otherwise.
  */
-bool peek(const struct queue *q, void *item);
+bool queue_peek_front(const struct queue *q, void *item);
 
 /**
  * @brief Retrieves the rear (most recently enqueued) item without removing it.
@@ -96,7 +96,7 @@ bool peek(const struct queue *q, void *item);
  * @param item Pointer to memory where the rear item will be copied.
  * @return true if the queue is not empty and the item was copied, false otherwise.
  */
-bool peek_back(const struct queue *q, void *item);
+bool queue_peek_back(const struct queue *q, void *item);
 
 /**
  * @brief Frees the memory allocated for the queue.
@@ -106,4 +106,4 @@ bool peek_back(const struct queue *q, void *item);
  * @param q Pointer to the queue.
  * @return true if the queue was successfully freed, false otherwise.
  */
-bool free_queue(struct queue *q);
+bool queue_deinitialize(struct queue *q);

@@ -3,22 +3,22 @@
 #include <string.h>
 #include "queue.h"
 
-bool create_queue(const size_t item_size, const size_t capacity, struct queue *q)
+bool queue_initialize(const size_t item_size, const size_t capacity, struct queue *q)
 {
     if (item_size == 0) {
-        fprintf(stderr, "item size is null at create_queue()\n");
+        fprintf(stderr, "item size is null at queue_initialize()\n");
         return false;
     }
 
     if (capacity == 0) {
-        fprintf(stderr, "capacity is null at create_queue()\n");
+        fprintf(stderr, "capacity is null at queue_initialize()\n");
         return false;
     }
 
 
     q->items = malloc(item_size * capacity);
     if (!q->items) {
-        fprintf(stderr, "malloc failed at create_queue()\n");
+        fprintf(stderr, "malloc failed at queue_initialize()\n");
         return false;
     }
 
@@ -43,20 +43,20 @@ bool queue_is_null(const struct queue *q)
     return !q || !q->items;
 }
 
-bool enqueue(struct queue *q, const void *item)
+bool queue_enqueue(struct queue *q, const void *item)
 {
     if (queue_is_null(q)) {
-        fprintf(stderr, "queue is null at enqueue()\n");
+        fprintf(stderr, "queue is null at queue_enqueue()\n");
         return false;
     }
 
     if (!item) {
-        fprintf(stderr, "item is null at enqueue()\n");
+        fprintf(stderr, "item is null at queue_enqueue()\n");
         return false;
     }
 
     if (queue_is_full(q)) {
-        fprintf(stderr, "queue is full at enqueue()\n");
+        fprintf(stderr, "queue is full at queue_enqueue()\n");
         return false;
     }
 
@@ -68,15 +68,15 @@ bool enqueue(struct queue *q, const void *item)
     return true;
 }
 
-bool dequeue(struct queue *q)
+bool queue_dequeue(struct queue *q)
 {
     if (queue_is_null(q)) {
-        fprintf(stderr, "queue is null at dequeue()\n");
+        fprintf(stderr, "queue is null at queue_dequeue()\n");
         return false;
     }
 
     if (queue_is_empty(q)) {
-        fprintf(stderr, "queue is empty at dequeue()\n");
+        fprintf(stderr, "queue is empty at queue_dequeue()\n");
         return false;
     }
 
@@ -87,10 +87,10 @@ bool dequeue(struct queue *q)
     return true;
 }
 
-bool peek(const struct queue *q, void *item)
+bool queue_peek_front(const struct queue *q, void *item)
 {
     if (queue_is_null(q)) {
-        fprintf(stderr, "queue is null at peek()\n");
+        fprintf(stderr, "queue is null at queue_peek_front()\n");
         return false;
     }
     void *src = (char *)q->item_size + (q->front * q->item_size);
@@ -99,15 +99,15 @@ bool peek(const struct queue *q, void *item)
     return true;
 }
 
-bool peek_back(const struct queue *q, void *item)
+bool queue_peek_back(const struct queue *q, void *item)
 {
     if (queue_is_null(q)) {
-        fprintf(stderr, "queue is null at peek_back()\n");
+        fprintf(stderr, "queue is null at queue_peek_back()\n");
         return false;
     }
 
     if (queue_is_empty(q)) {
-        fprintf(stderr, "queue is empty at peek_back()\n");
+        fprintf(stderr, "queue is empty at queue_peek_back()\n");
         return false;
     }
 
@@ -118,7 +118,7 @@ bool peek_back(const struct queue *q, void *item)
     return true;
 }
 
-bool free_queue(struct queue *q)
+bool queue_deinitialize(struct queue *q)
 {
     if (queue_is_null(q)) {
         return false;

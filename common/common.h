@@ -13,10 +13,10 @@
  */
 bool get_string_input(const char *msg, const size_t length, char *out);
 /**
- * Reads an integer input from stdin.
+ * Converts a string to unsigned long.
  * 
- * @param msg    The prompt message to display (cannot be NULL).
- * @param out    Pointer to store the integer result (cannot be NULL).
+ * @param str    String to convert.
+ * @param out    Pointer to store the unsigned long result (cannot be NULL).
  * @return       true on success, false on error.
  */
-bool get_int_input(const char *msg, int *out);
+bool parse_unsigned_long(const char *str, unsigned long *out);

@@ -4,26 +4,30 @@
 #include <string.h>
 #include "array.h"
 
-bool create_array(const void *items, size_t item_size, const size_t size, struct array *arr)
+bool array_initialize(const void *items, size_t item_size, const size_t size, struct array *arr)
 {
     if (!arr) {
-        fprintf(stderr, "arr pointer is null at create_array()\n");
+        fprintf(stderr, "arr pointer is null at array_initialize()\n");
         return false;
     }
+
     if (!items) {
-        fprintf(stderr, "items pointer is null at create_array()\n");
+        fprintf(stderr, "items pointer is null at array_initialize()\n");
         return false;
     }
+
     if (!arr->items) {
-        fprintf(stderr, "arr->items pointer is null at create_array(), must be preallocated\n");
+        fprintf(stderr, "arr->items pointer is null at array_initialize(), must be preallocated\n");
         return false;
     }
+
     if (size == 0) {
-        fprintf(stderr, "size is zero at create_array()\n");
+        fprintf(stderr, "size is zero at array_initialize()\n");
         return false;
     }
+
     if (item_size == 0) {
-        fprintf(stderr, "item_size is zero at create_array()\n");
+        fprintf(stderr, "item_size is zero at array_initialize()\n");
         return false;
     }
 
@@ -35,15 +39,15 @@ bool create_array(const void *items, size_t item_size, const size_t size, struct
     return true;
 }
 
-bool get_element(const struct array *arr, const size_t index, void *element)
+bool array_get_element(const struct array *arr, const size_t index, void *element)
 {
     if (!arr) {
-        fprintf(stderr, "array is null at get_element()\n");
+        fprintf(stderr, "array is null at array_get_element()\n");
         return false;
     }
 
     if (index >= arr->size) {
-        fprintf(stderr, "index is out of bounds at get_element()\n");
+        fprintf(stderr, "index is out of bounds at array_get_element()\n");
         return false;
     }
 
@@ -70,14 +74,14 @@ int compare_ints(const void *a, const void *b)
     return (arg1 > arg2) - (arg1 < arg2);
 }
 
-bool sort_array(struct array *arr, struct array *sorted_array) {
+bool array_sort(struct array *arr, struct array *sorted_array) {
     if (!arr) {
-        fprintf(stderr, "array is null at sort_array()\n");
+        fprintf(stderr, "array is null at array_sort()\n");
         return false;
     }
 
     if (!sorted_array) {
-        fprintf(stderr, "sorted_array is null at sort_array()\n");
+        fprintf(stderr, "sorted_array is null at array_sort()\n");
         return false;
     }
 
@@ -97,13 +101,12 @@ bool sort_array(struct array *arr, struct array *sorted_array) {
     return true;
 }
 
-bool free_array(struct array *arr)
+bool array_deinitialize(struct array *arr)
 {
     if (!arr) {
         return false;
     }
 
-    // free(arr->items);
     arr->items = NULL;
     arr->item_size = 0;
     arr->size = 0;

@@ -4,21 +4,21 @@
 #include <string.h>
 #include "linked_list.h"
 
-bool create_linked_list(const void *data, const size_t data_size, struct linked_list *head)
+bool linked_list_initialize(const void *data, const size_t data_size, struct linked_list *head)
 {
     if (!data) {
-        fprintf(stderr, "data is null at create_linked_list()\n");
+        fprintf(stderr, "data is null at linked_list_initialize()\n");
         return false;
     }
 
     if (data_size == 0) {
-        fprintf(stderr, "data size is null at create_linked_list()\n");
+        fprintf(stderr, "data size is null at linked_list_initialize()\n");
         return false;
     }
 
     head->data = malloc(data_size);
     if (!head->data) {
-        fprintf(stderr, "malloc failed at create_linked_list()\n");
+        fprintf(stderr, "malloc failed at linked_list_initialize()\n");
         return false;
     }
     memcpy(head->data, data, data_size);
@@ -28,27 +28,27 @@ bool create_linked_list(const void *data, const size_t data_size, struct linked_
     return true;
 }
 
-bool insert_linked_list(const void *data, const struct linked_list *head, struct linked_list *new_node)
+bool linked_list_insert_node(const void *data, const struct linked_list *head, struct linked_list *new_node)
 {
     if (!data) {
-        fprintf(stderr, "data is null at insert_linked_list()\n");
+        fprintf(stderr, "data is null at linked_list_insert_node()\n");
         return false;
     }
 
     if (!new_node) {
-        fprintf(stderr, "new node is null at insert_linked_list()\n");
+        fprintf(stderr, "new node is null at linked_list_insert_node()\n");
         return false;
     }
 
     if (!head || head->data_size == 0) {
-        fprintf(stderr, "head is null at insert_linked_list()\n");
+        fprintf(stderr, "head is null at linked_list_insert_node()\n");
         return false;
     }
 
     new_node->data_size = head->data_size;
     new_node->data = malloc(new_node->data_size);
     if (!new_node->data) {
-        fprintf(stderr, "malloc failed at insert_linked_list()\n");
+        fprintf(stderr, "malloc failed at linked_list_insert_node()\n");
         return false;
     }
     memcpy(new_node->data, data, new_node->data_size);
@@ -66,10 +66,10 @@ bool insert_linked_list(const void *data, const struct linked_list *head, struct
     return true;
 }
 
-bool remove_linked_list_node(struct linked_list *head)
+bool linked_list_remove_node(struct linked_list *head)
 {
     if (!head) {
-        fprintf(stderr, "linked list is empty at remove_linked_list()\n");
+        fprintf(stderr, "linked list is empty at linked_list_remove_node()\n");
         return false;
     }
 
@@ -91,15 +91,15 @@ bool remove_linked_list_node(struct linked_list *head)
     return true;
 }
 
-bool get_linked_list_node_data(const size_t index, const struct linked_list *head, void *out_data)
+bool linked_list_get_node_data(const size_t index, const struct linked_list *head, void *out_data)
 {
     if (!head || head->data_size == 0) {
-        fprintf(stderr, "head is null at get_linked_list()\n");
+        fprintf(stderr, "head is null at linked_list_get_node_data()\n");
         return false;
     }
 
     if (!out_data) {
-        fprintf(stderr, "out_data is null at get_linked_list()\n");
+        fprintf(stderr, "out_data is null at linked_list_get_node_data()\n");
         return false;
     }
 
@@ -119,7 +119,7 @@ bool get_linked_list_node_data(const size_t index, const struct linked_list *hea
     return false;
 }
 
-bool free_linked_list_node(struct linked_list *head)
+bool linked_list_deinitialize_node(struct linked_list *head)
 {
     if (!head || !head->data) {
         return false;
@@ -133,7 +133,7 @@ bool free_linked_list_node(struct linked_list *head)
     return true;
 }
 
-bool free_linked_list(struct linked_list *head)
+bool linked_list_deinitialize_all(struct linked_list *head)
 {
     if (!head || !head->data) {
         return false;
