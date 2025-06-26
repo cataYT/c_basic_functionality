@@ -33,7 +33,7 @@ bool linked_list_initialize(const void *data, const size_t data_size, struct lin
  * 
  * @return true on success, false on failure (e.g., allocation failure or invalid inputs).
  */
-bool linked_list_insert_node(const void *data, const struct linked_list *head, struct linked_list *new_node);
+bool linked_list_insert_node(struct linked_list *head, const void *data, struct linked_list *new_node);
 
 /**
  * @brief Removes the last node from the linked list.
@@ -55,7 +55,7 @@ bool linked_list_remove_node(struct linked_list *head);
  * 
  * @return true on success, false if index is out of bounds or inputs are invalid.
  */
-bool linked_list_get_node_data(const size_t index, const struct linked_list *head, void *out_data);
+bool linked_list_get_node_data(const struct linked_list *head, const size_t index, void *out_data);
 
 /**
  * @brief Frees the dynamically allocated contents of a single node.

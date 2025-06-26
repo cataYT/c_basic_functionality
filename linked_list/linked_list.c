@@ -28,7 +28,7 @@ bool linked_list_initialize(const void *data, const size_t data_size, struct lin
     return true;
 }
 
-bool linked_list_insert_node(const void *data, const struct linked_list *head, struct linked_list *new_node)
+bool linked_list_insert_node(struct linked_list *head, const void *data, struct linked_list *new_node)
 {
     if (!data) {
         fprintf(stderr, "data is null at linked_list_insert_node()\n");
@@ -91,7 +91,7 @@ bool linked_list_remove_node(struct linked_list *head)
     return true;
 }
 
-bool linked_list_get_node_data(const size_t index, const struct linked_list *head, void *out_data)
+bool linked_list_get_node_data(const struct linked_list *head, const size_t index, void *out_data)
 {
     if (!head || head->data_size == 0) {
         fprintf(stderr, "head is null at linked_list_get_node_data()\n");

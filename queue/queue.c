@@ -130,4 +130,6 @@ bool queue_deinitialize(struct queue *q)
     q->capacity = 0;
     q->front = 0;
     q->rear = 0;
+
+    return true;
 }

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "pair.h"
 
-bool pair_initialize(const void *key, const void *value, const size_t key_size, const size_t value_size, struct pair *p)
+bool pair_initialize(const void *key, const void *value, const size_t key_size, const size_t value_size, struct pair *pair)
 {
     if (!key) {
         fprintf(stderr, "key is null at pair_initialize()\n");
@@ -25,23 +25,23 @@ bool pair_initialize(const void *key, const void *value, const size_t key_size, 
         return false;
     }
 
-    p->key = malloc(key_size);
-    if (!p->key) {
+    pair->key = malloc(key_size);
+    if (!pair->key) {
         fprintf(stderr, "malloc failed at pair_initialize()\n");
         return false;
     }
     
-    p->value = malloc(value_size);
-    if (!p->value) {
+    pair->value = malloc(value_size);
+    if (!pair->value) {
         fprintf(stderr, "malloc failed at pair_initialize()\n");
-        free(p->key);
+        free(pair->key);
         return false;
     }
 
-    memcpy(p->key, key, key_size);
-    p->key_size = key_size;
-    memcpy(p->value, value, value_size);
-    p->value_size = value_size;
+    memcpy(pair->key, key, key_size);
+    pair->key_size = key_size;
+    memcpy(pair->value, value, value_size);
+    pair->value_size = value_size;
 
     return true;
 }
@@ -62,7 +62,7 @@ bool pair_deinitialize(struct pair *pair)
     free(pair->value);
     pair->value = NULL;
 
-    pair->key_size = 0;
+    pair->key_size   = 0;
     pair->value_size = 0;
     return true;
 }

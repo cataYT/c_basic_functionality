@@ -106,6 +106,7 @@ bool string_split(const struct string *strr, const char *delimiter, char **token
         i++;
     }
     free(copy_string);
+    return false;
 }
 
 void string_print_string(const struct string *strr)
