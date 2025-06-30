@@ -3,6 +3,9 @@
 #include <string.h>
 #include "vector.h"
 
+#define GET_ELEMENT(array, index, element_size) ((char *)(array) + ((index) * (element_size)))
+#define GET_VECTOR_ELEMENT(vector, index) (GET_ELEMENT((vector)->items, (index), (vec->e_size)))
+
 bool vector_initialize(const size_t capacity, const size_t e_size, struct vector *vec)
 {
     if (capacity == 0) {
@@ -50,7 +53,7 @@ bool vector_search_element(const struct vector *vec, const void *key, void *elem
     }
 
     for (size_t i = 0; i < vec->size; i++) {
-        void *vec_element = (char *)vec->items + i * vec->e_size;
+        void *vec_element = GET_VECTOR_ELEMENT(vec, i);
         if (cmp(vec_element, key)) {
             if (element) {
                 memcpy(element, vec_element, vec->e_size);
@@ -79,7 +82,7 @@ bool vector_get_element(const struct vector *vec, const size_t index, void *elem
         return false;
     }
 
-    void *src = (char *)vec->items + (index * vec->e_size);
+    void *src = GET_VECTOR_ELEMENT(vec, index);
     memcpy(element, src, vec->e_size);
 
     return true;
@@ -109,8 +112,7 @@ bool vector_push_back(struct vector *vec, const void *element)
         vec->items = new_block;
     }
     
-    size_t offset = vec->size * vec->e_size;
-    void *dest = (char *)vec->items + offset; // char* for advancing 1 byte
+    void *dest = GET_VECTOR_ELEMENT(vec, vec->size);
     memcpy(dest, element, vec->e_size);
     vec->size++;
 
@@ -139,20 +141,30 @@ bool vector_pop_search(struct vector *vec, const void *element)
     }
 
     for (size_t i = 0; i < vec->size; i++) {
-        void *current = (char*)vec->items + i * vec->e_size;
+        void *current = GET_VECTOR_ELEMENT(vec, i);
         // Compare current element with the target element
         if (memcmp(current, element, vec->e_size) == 0) {
             // Found the element to remove
 
             // Shift all elements after i one slot to the left
             for (size_t j = i + 1; j < vec->size; j++) {
-                size_t byte_offset = j * vec->e_size;
-                void *src = (char*)vec->items + byte_offset;            // calculates address at index j
-                void *dest = (char*)vec->items + (j - 1) * vec->e_size; // calculates address at index just before j
+                void *src = GET_VECTOR_ELEMENT(vec, j);      // calculates address at index j
+                void *dest = GET_VECTOR_ELEMENT(vec, j - 1); // calculates address at index just before j
                 memcpy(dest, src, vec->e_size);
             }
 
             vec->size--;
+
+            if (vec->size <= vec->capacity / 2 && vec->capacity > 4) {
+                size_t new_capacity = vec->capacity / 2;
+                void *temp = realloc(vec->items, new_capacity * sizeof(vec->e_size));
+                if (!temp) {
+                    fprintf(stderr, "failed to shrink vector in vector_pop_search()\n");
+                    return false;
+                }
+                vec->items = temp;
+                vec->capacity = new_capacity;
+            }
             return true;  // Remove only the first match
         }
     }
@@ -178,16 +190,29 @@ bool vector_pop_index(struct vector *vec, const size_t index, void *element)
     }
 
     // Get pointer to the element to pop
-    void *ele_ptr = (char *)vec->items + (index * vec->e_size);
+    void *ele_ptr = GET_VECTOR_ELEMENT(vec, index);
     memcpy(element, ele_ptr, vec->e_size); // Copy to output
 
     // Shift remaining elements left
     if (index < vec->size - 1) {
-        void *src = (char *)vec->items + ((index + 1) * vec->e_size);
-        memmove(ele_ptr, src, (vec->size - index - 1) * vec->e_size);
+        void *src = GET_VECTOR_ELEMENT(vec, index + 1);
+        size_t remaining_indices = vec->size - index - 1;
+        memmove(ele_ptr, src, remaining_indices * vec->e_size);
     }
 
     vec->size--;
+
+    if (vec->size <= vec->capacity / 2 && vec->capacity > 4) {
+        size_t new_capacity = vec->capacity / 2;
+        void *temp = realloc(vec->items, new_capacity * sizeof(vec->e_size));
+        if (!temp) {
+            fprintf(stderr, "failed to shrink vector in vector_pop_index()\n");
+            return false;
+        }
+        vec->items = temp;
+        vec->capacity = new_capacity;
+    }
+
     return true;
 }
 

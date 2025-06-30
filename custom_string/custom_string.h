@@ -5,15 +5,18 @@
 
 /**
  * @struct string
- * @brief A dynamic string structure for safe and flexible string manipulation.
+ * @brief  A dynamic string structure for safe and flexible string manipulation.
  *
  * Manages memory allocation, resizing, and string operations using a custom
  * string structure to avoid buffer overflows and support advanced string ops.
  */
 struct string {
-    char *str;           /**< Pointer to the null-terminated character array */
-    size_t size;         /**< Current length of the string (excluding null terminator) */
-    size_t capacity;     /**< Allocated memory capacity for the string (including space for null terminator) */
+    /** Pointer to the null-terminated character array */
+    char *str;
+    /** Current length of the string (excluding null terminator) */
+    size_t size;
+    /** Allocated memory capacity for the string (including space for null terminator) */
+    size_t capacity;
 };
 
 /**
@@ -21,9 +24,10 @@ struct string {
  *
  * Copies a C-string into a managed `string` struct with allocated memory.
  *
- * @param string Input C-string to initialize from.
- * @param capacity Total allocated capacity (must be >= strlen(string) + 1).
- * @param str Pointer to the string structure to initialize.
+ * @param[in]  string   Input C-string to initialize from.
+ * @param[in]  capacity Total allocated capacity (must be >= strlen(string) + 1).
+ * @param[out] str      Pointer to the string structure to initialize.
+ * 
  * @return true if successful, false on memory failure or invalid input.
  */
 bool string_initialize(const char *string, const size_t capacity, struct string *str);
@@ -33,19 +37,39 @@ bool string_initialize(const char *string, const size_t capacity, struct string 
  *
  * Replaces the old string data with a new one, resizing the buffer.
  *
- * @param old_string Pointer to the existing string to modify.
- * @param new_capacity New capacity to allocate.
- * @param new_string New string data to copy in.
+ * @param[in]  old_string   Pointer to the existing string to modify.
+ * @param[in]  new_capacity New capacity to allocate.
+ * @param[out] new_string   New string data to copy in.
+ * 
  * @return true if successful, false otherwise.
  */
 bool string_update(struct string *old_string, const size_t new_capacity, const char *new_string);
 
 /**
- * @brief 
+ * @brief Allocates tokens for string_split().
  * 
- * @param strr Pointer to the string struct.
- * @param delimiter Delimiter for splitting the string.
- * @param tokens User allocated container for tokens.
+ * @param[in] number_of_strings Number of strings to allocate for. 
+ * @param[in] string_size       Length of the longest string.
+ * 
+ * @return Dynamically allocated tokens if successful, NULL otherwise.
+ */
+char **allocate_tokens(const unsigned int number_of_strings, const unsigned int string_length);
+
+/**
+ * @brief Frees tokens allocated by allocate_tokens().
+ * 
+ * @param[in] number_of_strings Number of strings allocated.
+ * @param[in] tokens            Previously allocated tokens.
+ */
+void free_tokens(const unsigned int number_of_strings, char **tokens);
+
+/**
+ * @brief Splits a string with tokens allocated by allocate_tokens().
+ * 
+ * @param[in] strr      Pointer to the string struct.
+ * @param[in] delimiter Delimiter for splitting the string.
+ * @param[in] tokens    Caller allocated container for tokens.
+ * 
  * @return true if successful, false otherwise.
  */
 bool string_split(const struct string *strr, const char *delimiter, char **tokens);
@@ -53,15 +77,16 @@ bool string_split(const struct string *strr, const char *delimiter, char **token
 /**
  * @brief Prints the string to standard output.
  *
- * @param strr Pointer to the string to print.
+ * @param[in] strr Pointer to the string to print.
  */
 void string_print_string(const struct string *strr);
 
 /**
  * @brief Compares two strings for equality.
  *
- * @param strr1 Pointer to the first string.
- * @param strr2 Pointer to the second string.
+ * @param[in] strr1 Pointer to the first string.
+ * @param[in] strr2 Pointer to the second string.
+ * 
  * @return true if both strings are equal in content and length, false otherwise.
  */
 bool string_compare(const struct string *strr1, const struct string *strr2);
@@ -71,10 +96,11 @@ bool string_compare(const struct string *strr1, const struct string *strr2);
  *
  * The output string must be preallocated with enough capacity.
  *
- * @param strr1 Pointer to the first string.
- * @param strr2 Pointer to the second string.
- * @param capacity Capacity of the output string buffer.
- * @param out_string Pointer to the result string structure.
+ * @param[in]  strr1      Pointer to the first string.
+ * @param[in]  strr2      Pointer to the second string.
+ * @param[in]  capacity   Capacity of the output string buffer.
+ * @param[out] out_string Pointer to the result string structure.
+ * 
  * @return true if concatenation succeeded, false on capacity/memory failure.
  */
 bool string_add(const struct string *strr1, const struct string *strr2, const size_t capacity, struct string *out_string);
@@ -84,20 +110,20 @@ bool string_add(const struct string *strr1, const struct string *strr2, const si
  *
  * Copies a range of characters into a new string structure.
  *
- * @param strr Pointer to the source string.
- * @param start Starting index of the substring (0-based).
- * @param length Number of characters to extract.
- * @param substring Pointer to the destination string structure.
+ * @param[in]  strr      Pointer to the source string.
+ * @param[in]  start     Starting index of the substring (0-based).
+ * @param[in]  length    Number of characters to extract.
+ * @param[out] substring Pointer to caller allocated string struct.
+ * 
  * @return true if the substring was successfully extracted, false if out of bounds.
  */
 bool string_substring(const struct string *strr, const size_t start, const size_t length, struct string *substring);
 
 /**
- * @brief Frees the memory allocated by a string.
+ * @brief Deinitializes string.
  *
- * Releases the string buffer and resets fields to zero/null.
- *
- * @param strr Pointer to the string structure to free.
+ * @param[in] strr Pointer to the string structure to free.
+ * 
  * @return true if memory was successfully freed, false otherwise.
  */
 bool string_deinitialize(struct string *strr);

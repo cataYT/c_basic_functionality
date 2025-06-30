@@ -43,8 +43,8 @@ bool stack_peek(struct stack *s, void *item)
         fprintf(stderr, "item is null at stack_peek()\n");
         return false;
     }
-
-    void *src = (char *)s->items + ((s->size - 1 )* s->item_size);
+    
+    void *src = (char *)s->items + ((s->size - 1) * s->item_size);
     memcpy(item, src, s->item_size);
 
     return true;

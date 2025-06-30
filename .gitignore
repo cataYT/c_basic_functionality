@@ -1,3 +1,6 @@
 /.vscode
 test.c
 *.lib
+vc140.pdb
+test.*
+debug_lib.ps1

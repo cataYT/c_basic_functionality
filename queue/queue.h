@@ -11,12 +11,18 @@
  * to hold items of any type (via void pointers).
  */
 struct queue {
-    void *items;        /**< Pointer to the queue's item buffer */
-    size_t item_size;   /**< Size of each item in bytes */
-    size_t front;       /**< Index of the front item */
-    size_t rear;        /**< Index where the next item will be inserted */
-    size_t size;        /**< Current number of items in the queue */
-    size_t capacity;    /**< Maximum number of items the queue can hold */
+    /** Pointer to the queue's item buffer */
+    void *items;
+    /** Size of each item in bytes */
+    size_t item_size;
+    /** Index of the front item */
+    size_t front;
+    /** Index where the next item will be inserted */
+    size_t rear;
+    /** Current number of items in the queue */
+    size_t size;
+    /** Maximum number of items the queue can hold */
+    size_t capacity;
 };
 
 /**
@@ -24,9 +30,10 @@ struct queue {
  *
  * Allocates memory and sets up the metadata for a fixed-size circular queue.
  *
- * @param item_size Size of each item in bytes.
- * @param capacity Maximum number of items the queue can hold.
- * @param q Pointer to the queue structure to initialize.
+ * @param[in]  item_size Size of each item in bytes.
+ * @param[in]  capacity  Maximum number of items the queue can hold.
+ * @param[out] q         Pointer to the queue structure to initialize.
+ * 
  * @return true if the queue is successfully created, false otherwise.
  */
 bool queue_initialize(const size_t item_size, const size_t capacity, struct queue *q);
@@ -34,7 +41,8 @@ bool queue_initialize(const size_t item_size, const size_t capacity, struct queu
 /**
  * @brief Checks if the queue is full.
  *
- * @param q Pointer to the queue.
+ * @param[in] q Pointer to the queue.
+ * 
  * @return true if the queue is full, false otherwise.
  */
 bool queue_is_full(const struct queue *q);
@@ -42,7 +50,8 @@ bool queue_is_full(const struct queue *q);
 /**
  * @brief Checks if the queue is empty.
  *
- * @param q Pointer to the queue.
+ * @param[in] q Pointer to the queue.
+ * 
  * @return true if the queue is empty, false otherwise.
  */
 bool queue_is_empty(const struct queue *q);
@@ -50,7 +59,8 @@ bool queue_is_empty(const struct queue *q);
 /**
  * @brief Checks if the queue structure or its internal buffer is null.
  *
- * @param q Pointer to the queue.
+ * @param[in] q Pointer to the queue.
+ * 
  * @return true if the queue or its data is NULL, false otherwise.
  */
 bool queue_is_null(const struct queue *q);
@@ -60,8 +70,9 @@ bool queue_is_null(const struct queue *q);
  *
  * Copies the given item into the next available position in the queue.
  *
- * @param q Pointer to the queue.
- * @param item Pointer to the item to enqueue.
+ * @param[in]  q    Pointer to the queue.
+ * @param[out] item Pointer to the item to enqueue.
+ * 
  * @return true if the item was enqueued successfully, false if the queue is full.
  */
 bool queue_enqueue(struct queue *q, const void *item);
@@ -71,7 +82,8 @@ bool queue_enqueue(struct queue *q, const void *item);
  *
  * Does not return the removed item, only adjusts the internal pointers.
  *
- * @param q Pointer to the queue.
+ * @param[in] q Pointer to the queue.
+ * 
  * @return true if an item was dequeued, false if the queue is empty.
  */
 bool queue_dequeue(struct queue *q);
@@ -81,8 +93,9 @@ bool queue_dequeue(struct queue *q);
  *
  * Copies the front item into the provided memory location.
  *
- * @param q Pointer to the queue.
- * @param item Pointer to memory where the front item will be copied.
+ * @param[in]  q    Pointer to the queue.
+ * @param[out] item Pointer to memory where the front item will be copied.
+ * 
  * @return true if the queue is not empty and the item was copied, false otherwise.
  */
 bool queue_peek_front(const struct queue *q, void *item);
@@ -92,8 +105,9 @@ bool queue_peek_front(const struct queue *q, void *item);
  *
  * Copies the rear item into the provided memory location.
  *
- * @param q Pointer to the queue.
- * @param item Pointer to memory where the rear item will be copied.
+ * @param[in]  q    Pointer to the queue.
+ * @param[out] item Pointer to memory where the rear item will be copied.
+ * 
  * @return true if the queue is not empty and the item was copied, false otherwise.
  */
 bool queue_peek_back(const struct queue *q, void *item);
@@ -103,7 +117,8 @@ bool queue_peek_back(const struct queue *q, void *item);
  *
  * Releases all resources and resets the queue fields.
  *
- * @param q Pointer to the queue.
+ * @param[in] q Pointer to the queue.
+ * 
  * @return true if the queue was successfully freed, false otherwise.
  */
 bool queue_deinitialize(struct queue *q);

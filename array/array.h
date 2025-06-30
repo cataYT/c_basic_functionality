@@ -15,9 +15,12 @@
  */
 struct array
 {
-    void *items;         /**< Pointer to the raw data block containing all elements */
-    size_t item_size;    /**< Size of each element in bytes */
-    size_t size;         /**< Total number of elements stored */
+    /**Pointer to the raw data block containing all elements */
+    void *items;
+    /**Size of each element in bytes */
+    size_t item_size;
+    /**Total number of elements stored */
+    size_t size;
 };
 
 /**
@@ -26,10 +29,11 @@ struct array
  * Allocates memory and populates the array with the provided data.
  * The caller is responsible for calling `free_array` to release memory.
  *
- * @param items Pointer to the initial items to copy.
- * @param item_size Size of each item in bytes.
- * @param size Number of elements to copy.
- * @param arr Pointer to the array structure to initialize.
+ * @param[in]  items     Pointer to the initial items to copy.
+ * @param[in]  item_size Size of each item in bytes.
+ * @param[in]  size      Number of elements to copy.
+ * @param[out] arr       Pointer to the array structure to initialize.
+ * 
  * @return true if the array was successfully created, false otherwise.
  */
 bool array_initialize(const void *items, const size_t item_size, const size_t size, struct array *arr);
@@ -39,9 +43,10 @@ bool array_initialize(const void *items, const size_t item_size, const size_t si
  *
  * Performs bounds checking and copies the element into the provided buffer.
  *
- * @param arr Pointer to the array.
- * @param index Index of the element to retrieve (0-based).
- * @param element Pointer to memory where the element will be copied.
+ * @param[in]  arr     Pointer to the array.
+ * @param[in]  index   Index of the element to retrieve (0-based).
+ * @param[out] element Pointer to memory where the element will be copied.
+ * 
  * @return true if the element was successfully retrieved, false otherwise.
  */
 bool array_get_element(const struct array *arr, const size_t index, void *element);
@@ -52,8 +57,9 @@ bool array_get_element(const struct array *arr, const size_t index, void *elemen
  * The sorted array's memory must be allocated by the caller and have enough capacity.
  * This function assumes the array elements are integers for sorting.
  *
- * @param arr Pointer to the source array.
- * @param sorted_array Pointer to the destination array to hold sorted data.
+ * @param[in]  arr          Pointer to the source array.
+ * @param[out] sorted_array Pointer to the destination array to hold sorted data.
+ * 
  * @return true if sorting was successful, false otherwise.
  */
 bool array_sort(struct array *arr, struct array *sorted_array);
@@ -64,7 +70,8 @@ bool array_sort(struct array *arr, struct array *sorted_array);
  * Releases the dynamically allocated items buffer if owned.
  * After this call, the array structure is reset.
  *
- * @param arr Pointer to the array to free.
+ * @param[in] arr Pointer to the array to free.
+ * 
  * @return true if memory was successfully freed or array was empty, false otherwise.
  */
 bool array_deinitialize(struct array *arr);

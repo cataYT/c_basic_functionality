@@ -75,6 +75,58 @@ bool string_update(struct string *old_string, const size_t new_capacity, const c
     return true;
 }
 
+/**
+ * @brief Allocates tokens for string_split().
+ * 
+ * @param[in] number_of_strings Number of strings to allocate for. 
+ * @param[in] string_size       Length of the longest string.
+ * 
+ * @return Dynamically allocated tokens if successful, NULL otherwise.
+ */
+char **allocate_tokens(const unsigned int number_of_strings, const unsigned int string_length)
+{
+    if (number_of_strings == 0 || string_length == 0) {
+        return NULL;
+    }
+
+    char **tokens = malloc(number_of_strings * sizeof(char *));
+    if (!tokens) {
+        return NULL;
+    }
+
+    for (unsigned int i = 0; i < number_of_strings; i++) {
+        tokens[i] = malloc(string_length + 1);
+        if (!tokens[i]) {
+            // cleanup on failure
+            for (unsigned int j = 0; j < i; j++) {
+                free(tokens[j]);
+            }
+            free(tokens);
+            return NULL;
+        }
+        tokens[i][string_length] = '\0';
+    }
+    return tokens;
+}
+
+/**
+ * @brief Frees tokens allocated by allocate_tokens().
+ * 
+ * @param[in] number_of_strings Number of strings allocated.
+ * @param[in] tokens            Previously allocated tokens.
+ */
+void free_tokens(const unsigned int number_of_strings, char **tokens)
+{
+    if (!tokens) {
+        return;
+    }
+
+    for (unsigned int i = 0; i < number_of_strings; i++) {
+        free(tokens[i]);
+    }
+    free(tokens);
+}
+
 bool string_split(const struct string *strr, const char *delimiter, char **tokens)
 {
     if (!strr) {
@@ -106,7 +158,7 @@ bool string_split(const struct string *strr, const char *delimiter, char **token
         i++;
     }
     free(copy_string);
-    return false;
+    return true;
 }
 
 void string_print_string(const struct string *strr)

@@ -74,7 +74,8 @@ int compare_ints(const void *a, const void *b)
     return (arg1 > arg2) - (arg1 < arg2);
 }
 
-bool array_sort(struct array *arr, struct array *sorted_array) {
+bool array_sort(struct array *arr, struct array *sorted_array)
+{
     if (!arr) {
         fprintf(stderr, "array is null at array_sort()\n");
         return false;

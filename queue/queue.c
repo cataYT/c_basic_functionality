@@ -3,6 +3,9 @@
 #include <string.h>
 #include "queue.h"
 
+#define GET_ELEMENT(array, index, element_size) ((char *)(array) + ((index) * (element_size)))
+#define GET_QUEUE_ELEMENT(queue, index) (GET_ELEMENT((queue->items), (index), (queue->item_size)))
+
 bool queue_initialize(const size_t item_size, const size_t capacity, struct queue *q)
 {
     if (item_size == 0) {
@@ -60,7 +63,7 @@ bool queue_enqueue(struct queue *q, const void *item)
         return false;
     }
 
-    void *target = (char *)q->items + (q->rear * q->item_size);
+    void *target = GET_QUEUE_ELEMENT(q, q->rear);
     memcpy(target, item, q->item_size);
 
     q->rear = (q->rear + 1) % q->capacity;
@@ -80,7 +83,7 @@ bool queue_dequeue(struct queue *q)
         return false;
     }
 
-    void *target = (char *)q->items + (q->front * q->item_size);
+    void *target = GET_QUEUE_ELEMENT(q, q->front);
     memset(target, 0, q->item_size);
     q->front = (q->front + 1) % q->capacity;
     q->size--;
@@ -93,7 +96,7 @@ bool queue_peek_front(const struct queue *q, void *item)
         fprintf(stderr, "queue is null at queue_peek_front()\n");
         return false;
     }
-    void *src = (char *)q->item_size + (q->front * q->item_size);
+    void *src = GET_QUEUE_ELEMENT(q, q->front);
     memcpy(item, src, q->item_size);
 
     return true;
@@ -112,7 +115,7 @@ bool queue_peek_back(const struct queue *q, void *item)
     }
 
     size_t back_index = (q->rear + q->capacity - 1) % q->capacity;
-    void *src = (char *)q->items + (back_index * q->item_size);
+    void *src = GET_QUEUE_ELEMENT(q, back_index);
     memcpy(item, src, q->item_size);
 
     return true;

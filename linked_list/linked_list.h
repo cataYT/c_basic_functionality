@@ -1,78 +1,87 @@
+/**
+ * @file  linked_list.h
+ * @brief Singly linked list interface for generic data storage.
+ *
+ * This header provides an interface to create, manage, and manipulate a 
+ * generic singly linked list that stores data of arbitrary types using void pointers.
+ */
+
 #pragma once
 
 #include <stdbool.h>
 #include <stddef.h>
 
-struct linked_list {
+/**
+ * @struct l_node
+ * @brief  Represents a node in a singly linked list.
+ *
+ * Each node holds a pointer to the data and the next node in the list.
+ */
+struct l_node {
+    /** Pointer to the data stored in the node */
     void *data;
-    size_t data_size;
-    struct linked_list *next;
+    /** Pointer to the next node */
+    struct l_node *next;
 };
 
 /**
- * @brief Initializes the head of a linked list with the given data.
- * 
- * Caller has the freedom to allocate `head` on the stack or heap,
- * and also retains responsibility for freeing the memory when needed.
- * 
- * @param[in]  data       Pointer to data to be copied into the node.
- * @param[in]  data_size  Size of the data in bytes.
- * @param[out] head       Pointer to a user-allocated linked list node to initialize.
- * 
- * @return true on success, false on failure (e.g., allocation failure or invalid inputs).
+ * @struct s_linked
+ * @brief  Represents the singly linked list structure.
+ *
+ * This structure maintains the head pointer and the size of the data each node stores.
  */
-bool linked_list_initialize(const void *data, const size_t data_size, struct linked_list *head);
+struct s_linked {
+    /** Pointer to the first node in the list */
+    struct l_node *head;
+    /** Size of the data each node stores */
+    size_t data_size;
+};
 
 /**
- * @brief Inserts a new node at the end of the linked list.
+ * @brief Initializes a singly linked list.
+ *
+ * @param[in]  data_size Size of the data to be stored in each node.
+ * @param[out] list      Pointer to the list to initialize.
  * 
- * @param[in]  data      Pointer to data to be copied into the new node.
- * @param[in]  head      Pointer to the head of the list (must be initialized).
- * @param[out] new_node  Pointer to a user-allocated struct to become the new node.
- *                       This function initializes the node's memory.
- * 
- * @return true on success, false on failure (e.g., allocation failure or invalid inputs).
+ * @return true on successful initialization, false on failure.
  */
-bool linked_list_insert_node(struct linked_list *head, const void *data, struct linked_list *new_node);
+bool s_linked_init(const size_t data_size, struct s_linked *list);
 
 /**
- * @brief Removes the last node from the linked list.
+ * @brief Inserts a new node with data at the end of the list.
+ *
+ * @param[in] list Pointer to the list.
+ * @param[in] data Pointer to the data to insert.
  * 
- * @param[in,out] head  Pointer to the head of the list. If it's the only node,
- *                      its contents are freed but the struct remains valid.
- * 
- * @return true on success, false on failure (e.g., empty list).
+ * @return true on success, false on failure.
  */
-bool linked_list_remove_node(struct linked_list *head);
+bool s_linked_insert(struct s_linked *list, const void *data);
 
 /**
- * @brief Retrieves a copy of the data at a specified index in the linked list.
+ * @brief Removes the last node from the list.
+ *
+ * @param[in] list Pointer to the list.
  * 
- * @param[in]  index     Index of the node to access.
- * @param[in]  head      Pointer to the head of the list.
- * @param[out] out_data  Pointer to memory allocated by the caller to receive the data copy.
- *                       Must be large enough to hold the data (same size as node's data_size).
- * 
- * @return true on success, false if index is out of bounds or inputs are invalid.
+ * @return true on successful removal, false if the list is empty or invalid.
  */
-bool linked_list_get_node_data(const struct linked_list *head, const size_t index, void *out_data);
+bool s_linked_remove(struct s_linked *list);
 
 /**
- * @brief Frees the dynamically allocated contents of a single node.
+ * @brief Retrieves the data at a specified index.
+ *
+ * @param[in]  list     Pointer to the list.
+ * @param[in]  index    Zero-based index of the node to retrieve.
+ * @param[out] out_data Pointer to a buffer where the data will be copied.
  * 
- * @param[in,out] head  Pointer to the node to clear. Only clears contents, not the struct itself.
- * 
- * @return true on success, false if input is NULL or already freed.
+ * @return true if the index is valid and data is retrieved, false otherwise.
  */
-bool linked_list_deinitialize_node(struct linked_list *head);
+bool s_linked_get(const struct s_linked *list, const size_t index, void *out_data);
 
 /**
- * @brief Frees the data of all nodes in the linked list.
+ * @brief Frees all memory used by the list and resets its state.
+ *
+ * @param[in] list Pointer to the list.
  * 
- * The list structure itself (the node structs) are not deallocated — the caller must manage them.
- * 
- * @param[in,out] head  Pointer to the head of the list.
- * 
- * @return true on success, false if input is NULL or list is already cleared.
+ * @return true on successful destruction, false if the list is invalid.
  */
-bool linked_list_deinitialize_all(struct linked_list *head);
+bool s_linked_destroy(struct s_linked *list);
