@@ -70,7 +70,7 @@ void d_linked_remove(struct d_linked *list)
     free(to_remove);
 }
 
-bool d_linked_get(struct d_linked *list, const size_t index, void *out)
+bool d_linked_get(const struct d_linked *list, const size_t index, void *out)
 {
     if (!list || !out) {
         return 0;
